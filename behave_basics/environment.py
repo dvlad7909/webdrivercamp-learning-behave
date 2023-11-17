@@ -8,3 +8,8 @@ def before_feature(context, feature):
 
 def after_feature(context, feature):
     context.browser.close()
+
+
+def before_scenario(context, scenario):
+    if '@no_background' in scenario.effective_tags:
+        scenario.feature.background = None
