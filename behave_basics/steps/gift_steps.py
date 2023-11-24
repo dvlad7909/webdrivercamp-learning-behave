@@ -67,7 +67,7 @@ def step_impl(context, var, level=None):
 
 @then("Verify all collected results\' {parameter} is {condition}")
 def step_impl(context, parameter, condition):
-    if (condition.find('<') >= 0) or (condition.find('>') >= 0) or (condition.find('=') >= 0):
+    if any(char in condition for char in {'<', '>', '='}):
         for i in context.feature.collected_items:
             if i[parameter].find('$') < 0:
                 print(f"No price available for item {context.feature.collected_items.index(i) + 1}, {i["name"]}")
