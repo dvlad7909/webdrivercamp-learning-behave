@@ -7,39 +7,34 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from behave_basics.components.base import *
 
 
-class GiftPage:
-    def __init__(self, driver):
-        self.driver = driver
+class GiftPage(Base):
 
     def select_option(self, option, section):
         xpath = f"//span[contains(text(), '{section}')]//ancestor::div//span[contains(text(), '{option}')]//ancestor::a"
         locator = (By.XPATH, xpath)
-        element = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(locator))
-        element_location = element.location_once_scrolled_into_view
-        element.click()
+        self.find_element(locator).location_once_scrolled_into_view
+        self.click(locator)
 
     def get_item_name(self, parent):
         time.sleep(0.2)
         item_name_locator = (By.XPATH, f"//{parent}a[@data-test='product-title']")
-        element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(item_name_locator))
-        txt = element.text
-        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(item_name_locator)).location_once_scrolled_into_view
+        txt = self.get_text(item_name_locator)
+        self.find_element(item_name_locator).location_once_scrolled_into_view
         return txt
 
     def get_item_price(self, parent):
         item_price_locator = (By.XPATH, f"//{parent}span[@data-test='current-price']/span[1]")
-        element = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(item_price_locator))
-        txt = element.text
+        txt = self.get_text(item_price_locator)
         return txt
 
     def get_item_shipping(self, parent):
         item_shipping_locator = (
             By.XPATH, f"//{parent}span[@data-test='LPFulfillmentSectionShippingFA_standardShippingMessage']/span")
         try:
-            element = WebDriverWait(self.driver, 0.5).until(EC.presence_of_element_located(item_shipping_locator))
-            txt = element.text
+            txt = self.get_text(item_shipping_locator)
         except TimeoutException:
             return None
         else:

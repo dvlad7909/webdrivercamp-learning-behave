@@ -28,3 +28,7 @@ class Base:
             assert search_text.lower() in element.text.lower()
         except AssertionError:
             print(f"Search text '{search_text.lower()}', is not in header '{element.text.lower()}'")
+
+    def get_text(self, locator):
+        element = WebDriverWait(self.driver, 0.1).until(EC.visibility_of_element_located(locator))
+        return element.text

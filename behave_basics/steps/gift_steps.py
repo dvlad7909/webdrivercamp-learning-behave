@@ -46,7 +46,6 @@ def step_impl(context, search_item):
 def step_impl(context, option, section):
     context.gift_page = GiftPage(context.browser)
     context.gift_page.select_option(option, section)
-    pass
 
 
 # @step("Collect all items on the first page into {var}")
